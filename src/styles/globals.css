@@ -1,1 +1,105 @@
 @import "tailwindcss";
+
+@theme {
+    --color-purple-1: #CC6BFB;
+
+    --color-orange-1: #FF9258;
+
+}
+
+@keyframes slide-in-right {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slide-in-left {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slide-in-top {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slide-in-bottom {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-right {
+    animation: slide-in-right 1.2s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.animate-left {
+    animation: slide-in-left 1.2s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.animate-top {
+    animation: slide-in-top 1.2s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+.animate-bottom {
+    animation: slide-in-bottom 1.2s cubic-bezier(.22, 1, .36, 1) both;
+}
+
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(4px)
+    }
+
+    to {
+        opacity: 1;
+        transform: none
+    }
+}
+
+
+.gradient-text {
+    background: linear-gradient(90deg, var(--color-purple-1), var(--color-orange-1));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.gradient-text1 {
+    color: linear-gradient(90deg, var(--color-purple-1), var(--color-orange-1));
+}
+
+.animate-fade-in {
+    animation: fade-in .6s ease-out both;
+}
+
+.container {
+  @apply container right-0 left-0 mx-auto lg:px-8 md:px-28 px-8 xl:px-64;
+}
