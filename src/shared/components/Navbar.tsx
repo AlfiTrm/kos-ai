@@ -23,9 +23,9 @@ const ITEMS: Item[] = [
   {
     key: "budget",
     label: "Budget",
-    href: "/finance",
+    href: "/budget",
     icon: LineChart,
-    match: (p) => p.startsWith("/finance"),
+    match: (p) => p.startsWith("/budget"),
   },
   {
     key: "schedule",
