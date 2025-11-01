@@ -1,11 +1,14 @@
 import CalendarScreen from "@/features/schedules/container/CalenderScreen";
-import React from "react";
+import React, { Suspense } from "react";
 import "@/styles/globals.css";
+import Loading from "@/app/loading";
 
 const page = () => {
   return (
     <div className="container">
-      <CalendarScreen />
+      <Suspense fallback={<Loading />}>
+        <CalendarScreen />
+      </Suspense>
     </div>
   );
 };

@@ -4,7 +4,6 @@ import React from "react";
 import type {
   TransactionFormState,
   TransactionType,
-  Category,
   TransactionFormErrors,
 } from "../types/bTypes";
 import {

@@ -4,7 +4,6 @@ import { useKosAIStore } from "@/libs/store";
 import {
   useScheduleStore,
 } from "@/features/schedules/hooks/useScheduleStore";
-import type { ScheduleTask } from "@/features/schedules/types/scTypes";
 import { useStockStore } from "@/features/stock/hooks/useStockStore";
 import type { UnitName } from "@/features/stock/types/sTypes";
 

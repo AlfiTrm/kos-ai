@@ -1,0 +1,22 @@
+{
+  "theme_color": "#CC6BFB",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "name": "KosAI",
+  "short_name": "KosAI",
+  "description": "Asisten AI untuk anak kos.",
+  "icons": [
+    {
+      "src": "/logo/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

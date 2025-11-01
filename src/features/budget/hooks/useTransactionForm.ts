@@ -9,7 +9,6 @@ import type {
   TransactionFormErrors,
 } from "../types/bTypes";
 import { useKosAIStore } from "@/libs/store";
-import { formatRupiah } from "@/libs/format";
 
 const getTodayDateString = () => {
   const today = new Date();
