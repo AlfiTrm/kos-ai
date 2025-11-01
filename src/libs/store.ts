@@ -4,10 +4,6 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { nanoid } from "nanoid";
 
-interface Budget {
-  monthly: number;
-  spent: number;
-}
 
 export interface Txn {
   id: string;
@@ -17,19 +13,18 @@ export interface Txn {
 }
 
 interface KosAIState {
-  budget: Budget;
   txns: Txn[];
   addCustomExpense: (amount: number, category: string) => void;
-  addIncome?: (amount: number, category?: string) => void; 
-  setMonthlyBudget: (amount: number) => void;
+  addIncome: (amount: number, category: string) => void;
   resetBudget: () => void;
-  remaining?: () => number;
+  getTotalBalance: () => number;
+  getTotalIncome: () => number;
+  getTotalExpense: () => number;
 }
 
 export const useKosAIStore = create<KosAIState>()(
   persist(
     (set, get) => ({
-      budget: { monthly: 1_000_000, spent: 0 },
       txns: [],
 
       addCustomExpense: (amount, category) =>
@@ -43,10 +38,6 @@ export const useKosAIStore = create<KosAIState>()(
             },
             ...s.txns,
           ],
-          budget: {
-            ...s.budget,
-            spent: s.budget.spent + Math.abs(amount),
-          },
         })),
 
       addIncome: (amount, category = "income") =>
@@ -60,23 +51,28 @@ export const useKosAIStore = create<KosAIState>()(
             },
             ...s.txns,
           ],
-          budget: { ...s.budget },
         })),
 
-      setMonthlyBudget: (amount) =>
-        set((s) => ({
-          budget: { ...s.budget, monthly: Math.max(0, Math.floor(amount)) },
-        })),
 
       resetBudget: () =>
         set(() => ({
-          budget: { monthly: 1_000_000, spent: 0 },
           txns: [],
         })),
 
-      remaining: () => {
-        const { monthly, spent } = get().budget;
-        return monthly - spent;
+      getTotalBalance: () => {
+        return get().txns.reduce((acc, txn) => acc + txn.amount, 0);
+      },
+
+      getTotalIncome: () => {
+        return get()
+          .txns.filter((t) => t.amount > 0)
+          .reduce((acc, t) => acc + t.amount, 0);
+      },
+
+      getTotalExpense: () => {
+        return get()
+          .txns.filter((t) => t.amount < 0)
+          .reduce((acc, t) => acc + Math.abs(t.amount), 0);
       },
     }),
     { name: "kosai-finance" }

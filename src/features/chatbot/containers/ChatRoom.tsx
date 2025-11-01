@@ -6,6 +6,7 @@ import ChatInput from "../components/ChatInput";
 import ChatMessage from "../components/ChatMessage";
 import { useChatEngine } from "../hooks/useChatEngine";
 import chatbotLogo from "../../../../public/logo/chatbot-logo.png";
+import { useKosAIStore } from "@/libs/store"; 
 
 const formatIDR = (n: number) =>
   new Intl.NumberFormat("id-ID", {
@@ -14,37 +15,47 @@ const formatIDR = (n: number) =>
     maximumFractionDigits: 0,
   }).format(n);
 
-function replyEngine(text: string): string {
-  const t = text.trim().toLowerCase();
-  if (/^saldo|sisa/.test(t)) {
-    const monthly = 1_000_000,
-      spent = 275_000;
-    return `Sisa uang bulan ini ${formatIDR(
-      monthly - spent
-    )} (budget: ${formatIDR(monthly)}, terpakai: ${formatIDR(spent)}).`;
-  }
-  const m = t.match(/^(tambah|catat)\s+([\d\.]+)\s+(.+)/);
-  if (m) {
-    const amt = Number(m[2].replace(/\./g, ""));
-    const cat = m[3].trim();
-    if (!amt) return "Nominalnya kok aneh, Nak. Coba `tambah 12000 makan` ya~";
-    return `Siap, Ibu catat ${formatIDR(
-      amt
-    )} buat **${cat}**. Jangan boros ya 😘`;
-  }
-  return "Ibu kurang paham, coba `saldo` atau `tambah 12000 makan` ya.";
-}
-
 export default function ChatRoom() {
   const { chat: chatId } = useParams<{ chat: string }>();
   const router = useRouter();
+
+  const getTotalBalance = useKosAIStore((s) => s.getTotalBalance);
+  const getTotalExpense = useKosAIStore((s) => s.getTotalExpense);
+  const addExpense = useKosAIStore((s) => s.addCustomExpense);
+  const replyEngine = (text: string): string => {
+    const t = text.trim().toLowerCase();
+
+    if (/^saldo|sisa/.test(t)) {
+      const balance = getTotalBalance();
+      const spent = getTotalExpense(); 
+
+      return `Sisa uang kamu saat ini ${formatIDR(
+        balance
+      )}. Total pengeluaran tercatat ${formatIDR(spent)}.`;
+    }
+
+    const m = t.match(/^(tambah|catat)\s+([\d\.]+)\s+(.+)/);
+    if (m) {
+      const amt = Number(m[2].replace(/\./g, ""));
+      const cat = m[3].trim();
+      if (!amt)
+        return "Nominalnya kok aneh, Nak. Coba `tambah 12000 makan` ya~";
+
+      addExpense(amt, cat);
+
+      return `Siap, Ibu catat ${formatIDR(
+        amt
+      )} buat **${cat}**. Jangan boros ya 😘`;
+    }
+    return "Ibu kurang paham, coba `saldo` atau `tambah 12000 makan` ya.";
+  };
 
   const { chat, onSend, scrollRef, isEmptyIntro } = useChatEngine(chatId, {
     thinkingDelay: 1000,
     charPerTick: 2,
     tickMs: 16,
     emptyIntroCount: 1,
-    replyEngine,
+    replyEngine, 
   });
 
   if (!chat) return null;

@@ -2,6 +2,7 @@
 
 import React, { useMemo } from "react";
 import { useKosAIStore } from "@/libs/store";
+import { formatRupiah } from "@/libs/format";
 
 type Props = {
   size?: number;
@@ -9,45 +10,37 @@ type Props = {
 };
 
 export default function BudgetSummaryChart({ size = 240, stroke = 20 }: Props) {
-  const txns = useKosAIStore((s) => s.txns);
-  const budget = useKosAIStore((s) => s.budget);
+  const getTotalBalance = useKosAIStore((s) => s.getTotalBalance);
+  const getTotalIncome = useKosAIStore((s) => s.getTotalIncome);
+  const getTotalExpense = useKosAIStore((s) => s.getTotalExpense);
 
-  const { income, expense, pIncome, pExpense, overallPct, circumference, r } =
+  const totalBalance = getTotalBalance();
+  const income = getTotalIncome();
+  const expense = getTotalExpense(); 
+
+  const { pIncome, pExpense, circumference, r, incLen, expLen } =
     useMemo(() => {
-      const income = txns
-        .filter((t) => t.amount > 0)
-        .reduce((a, b) => a + b.amount, 0);
-      const expense = txns
-        .filter((t) => t.amount < 0)
-        .reduce((a, b) => a + Math.abs(b.amount), 0);
       const totalActivity = Math.max(income + expense, 1);
       const pIncome = Math.round((income / totalActivity) * 100);
       const pExpense = 100 - pIncome;
 
-      const overallPct = Math.max(
-        0,
-        Math.min(
-          100,
-          Math.round((budget.spent / Math.max(budget.monthly, 1)) * 100)
-        )
-      );
-
       const r = (size - stroke) / 2;
       const circumference = 2 * Math.PI * r;
+
+      const incLen = (pIncome / 100) * circumference;
+      const expLen = (pExpense / 100) * circumference;
+
       return {
-        income,
-        expense,
         pIncome,
         pExpense,
-        overallPct,
         circumference,
         r,
+        incLen,
+        expLen,
       };
-    }, [txns, budget, size, stroke]);
+    }, [income, expense, size, stroke]);
 
-  const incLen = (pIncome / 100) * circumference;
-  const expLen = (pExpense / 100) * circumference;
-  const gap = 8; 
+  const gap = 8;
   const startRot = -90;
 
   return (
@@ -113,9 +106,11 @@ export default function BudgetSummaryChart({ size = 240, stroke = 20 }: Props) {
 
         <div className="absolute inset-0 grid place-items-center text-center">
           <div>
-            <div className="text-4xl font-extrabold">{overallPct}%</div>
-            <div className="text-xs text-neutral-600 -mt-1">
-              Overall Activity
+            <div className="text-3xl font-extrabold px-4">
+              {formatRupiah(totalBalance)}
+            </div>
+            <div className="text-xs text-neutral-600 mt-1">
+              Uang Saat Ini 
             </div>
           </div>
         </div>
@@ -128,7 +123,6 @@ export default function BudgetSummaryChart({ size = 240, stroke = 20 }: Props) {
         </span>
       </div>
 
-      {/* Legend */}
       <div className="mt-3 flex items-center gap-3 justify-center">
         <LegendDot colorFrom="#c4b5fd" colorTo="#a78bfa" label="Income" />
         <LegendDot colorFrom="#f472b6" colorTo="#fb923c" label="Expense" />

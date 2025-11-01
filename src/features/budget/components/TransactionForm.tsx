@@ -105,11 +105,6 @@ export default function TransactionForm({
           active={form.type === "Income"}
           onClick={() => onTypeChange("Income")}
         />
-        <TypeButton
-          label="Transfer"
-          active={form.type === "Transfer"}
-          onClick={() => onTypeChange("Transfer")}
-        />
       </div>
 
       <div className="text-center bg-white/70 backdrop-blur rounded-2xl p-4 shadow-sm border border-white/30">
