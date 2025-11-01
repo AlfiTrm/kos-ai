@@ -38,7 +38,7 @@ export default function DatePicker({
   return (
     <div
       ref={scrollRef}
-      className="flex gap-2 overflow-x-auto pb-3 mb-4 -mx-4 px-4"
+      className="flex relative z-20 gap-2 overflow-x-auto pb-3 mb-4 -mx-4 px-4"
     >
       {days.map((day) => {
         const isActive = day.dateStr === selectedDate;

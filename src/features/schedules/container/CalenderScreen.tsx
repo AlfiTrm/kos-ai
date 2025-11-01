@@ -11,7 +11,7 @@ const getToday = () => new Date().toISOString().split("T")[0];
 
 const parseDateString = (dateStr: string) => {
   if (!dateStr || !/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
-    return new Date(); 
+    return new Date();
   }
   const [year, month, day] = dateStr.split("-").map(Number);
   return new Date(year, month - 1, day);
@@ -38,21 +38,21 @@ export default function CalendarScreen() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const [selectedDate, setSelectedDate] = useState(getToday());
-  const [displayDate, setDisplayDate] = useState(parseDateString(getToday()));
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [displayDate, setDisplayDate] = useState<Date | null>(null);
 
   useEffect(() => {
     const dateFromQuery = searchParams.get("date");
-    if (
-      dateFromQuery &&
-      /^\d{4}-\d{2}-\d{2}$/.test(dateFromQuery) &&
-      dateFromQuery !== selectedDate
-    ) {
-      setSelectedDate(dateFromQuery);
-      const queryDate = parseDateString(dateFromQuery);
-      queryDate.setDate(1); 
-      setDisplayDate(queryDate);
-    }
+    const initialDateStr =
+      dateFromQuery && /^\d{4}-\d{2}-\d{2}$/.test(dateFromQuery)
+        ? dateFromQuery
+        : getToday();
+
+    setSelectedDate(initialDateStr);
+
+    const initialDisplayDate = parseDateString(initialDateStr);
+    initialDisplayDate.setDate(1);
+    setDisplayDate(initialDisplayDate);
   }, [searchParams]);
 
   const getDailyTasksByDateFn = useScheduleStore((s) => s.getDailyTasksByDate);
@@ -61,14 +61,16 @@ export default function CalendarScreen() {
 
   const dailyTasks = useMemo(
     () =>
-      getDailyTasksByDateFn(selectedDate).sort((a, b) =>
-        (a.startTime || "00:00").localeCompare(b.startTime || "00:00")
-      ),
+      selectedDate
+        ? getDailyTasksByDateFn(selectedDate).sort((a, b) =>
+            (a.startTime || "00:00").localeCompare(b.startTime || "00:00")
+          )
+        : [],
     [getDailyTasksByDateFn, selectedDate, tasks, taskOrder]
   );
 
   const daysForMonth = useMemo(
-    () => generateMonthDays(displayDate),
+    () => (displayDate ? generateMonthDays(displayDate) : []),
     [displayDate]
   );
 
@@ -77,16 +79,22 @@ export default function CalendarScreen() {
   };
 
   const goToPrevMonth = () => {
+    if (!displayDate) return;
     const newDate = new Date(displayDate);
     newDate.setMonth(newDate.getMonth() - 1);
     setDisplayDate(newDate);
   };
 
   const goToNextMonth = () => {
+    if (!displayDate) return;
     const newDate = new Date(displayDate);
     newDate.setMonth(newDate.getMonth() + 1);
     setDisplayDate(newDate);
   };
+
+  if (!selectedDate || !displayDate) {
+    return null;
+  }
 
   const monthName = displayDate.toLocaleDateString("id-ID", {
     month: "long",
@@ -95,10 +103,7 @@ export default function CalendarScreen() {
 
   return (
     <main className="w-full pb-24">
-      <AppHeader
-        title="Schedule"
-        onBack={() => router.push("/schedule")}
-      />
+      <AppHeader title="Schedule" onBack={() => router.push("/schedule")} />
 
       <div className="flex justify-between items-center mt-3 mb-3 px-2">
         <button
@@ -128,9 +133,7 @@ export default function CalendarScreen() {
         </h2>
         <div className="space-y-3">
           {dailyTasks.length > 0 ? (
-            dailyTasks.map((task) => (
-              <DailyTaskRow key={task.id} task={task} />
-            ))
+            dailyTasks.map((task) => <DailyTaskRow key={task.id} task={task} />)
           ) : (
             <p className="text-sm text-neutral-500 text-center py-6">
               Tidak ada aktivitas untuk tanggal ini.
