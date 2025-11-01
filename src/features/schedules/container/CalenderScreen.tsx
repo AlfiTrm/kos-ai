@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import AppHeader from "@/shared/components/AppHeader";
 import AddButton from "@/features/stock/components/AddButton";
 import DatePicker, { DayInMonth } from "../components/DatePicker";
-import DailyTaskRow from "../components/DailyTaskRow";
+import TodayTaskCard from "../components/TodayTaskCard";
 import { useScheduleStore } from "../hooks/useScheduleStore";
 
 const getToday = () => new Date().toISOString().split("T")[0];
@@ -77,14 +77,12 @@ export default function CalendarScreen() {
   const handleSelectDate = (dateStr: string) => {
     setSelectedDate(dateStr);
   };
-
   const goToPrevMonth = () => {
     if (!displayDate) return;
     const newDate = new Date(displayDate);
     newDate.setMonth(newDate.getMonth() - 1);
     setDisplayDate(newDate);
   };
-
   const goToNextMonth = () => {
     if (!displayDate) return;
     const newDate = new Date(displayDate);
@@ -103,8 +101,12 @@ export default function CalendarScreen() {
 
   return (
     <main className="w-full pb-24">
-      <AppHeader title="Schedule" onBack={() => router.push("/schedule")} />
+      <AppHeader
+        title="Schedule"
+        onBack={() => router.push("/schedule")}
+      />
 
+      {/* Navigasi Bulan (Tidak berubah) */}
       <div className="flex justify-between items-center mt-3 mb-3 px-2">
         <button
           onClick={goToPrevMonth}
@@ -121,19 +123,23 @@ export default function CalendarScreen() {
         </button>
       </div>
 
+      {/* DatePicker (Tidak berubah) */}
       <DatePicker
         days={daysForMonth}
         selectedDate={selectedDate}
         onSelectDate={handleSelectDate}
       />
 
+      {/* Daftar Aktivitas */}
       <div>
         <h2 className="text-lg font-semibold mb-3">
           {selectedDate === getToday() ? "Today's activity" : "Activity"}
         </h2>
         <div className="space-y-3">
           {dailyTasks.length > 0 ? (
-            dailyTasks.map((task) => <DailyTaskRow key={task.id} task={task} />)
+            dailyTasks.map((task) => (
+              <TodayTaskCard key={task.id} task={task} />
+            ))
           ) : (
             <p className="text-sm text-neutral-500 text-center py-6">
               Tidak ada aktivitas untuk tanggal ini.

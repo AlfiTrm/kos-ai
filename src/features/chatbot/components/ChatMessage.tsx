@@ -16,7 +16,7 @@ export default function ChatMessage({ m }: { m: Message }) {
         {m.status === "typing" && m.text.length === 0 ? (
           <TypingDots />
         ) : (
-          <span>{m.text}</span>
+          <span className="whitespace-pre-wrap">{m.text}</span>
         )}
       </div>
     </div>

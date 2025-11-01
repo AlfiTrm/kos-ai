@@ -6,13 +6,20 @@ import { nanoid } from "nanoid";
 
 interface StockState {
   items: Record<string, StockItem>;
-  order: string[]; 
+  order: string[];
 
-  addItem: (data: { name: string; icon?: string; unit: UnitName; amount: number }) => string;
+  addItem: (data: {
+    name: string;
+    icon?: string;
+    unit: UnitName;
+    amount: number;
+  }) => string;
   incLeftover: (id: string, n?: number) => void;
   decLeftover: (id: string, n?: number) => void;
   setLeftover: (id: string, val: number) => void;
   deleteItem: (id: string) => void;
+  getAllItems: () => StockItem[];
+  findItemByName: (name: string) => StockItem | undefined;
 }
 
 export const useStockStore = create<StockState>()(
@@ -63,6 +70,19 @@ export const useStockStore = create<StockState>()(
           const { [id]: _, ...rest } = s.items;
           return { items: rest, order: s.order.filter(x => x !== id) };
         }),
+      
+      getAllItems: () => {
+        return get().order.map(id => get().items[id]).filter(Boolean);
+      },
+
+      findItemByName: (name) => {
+        const items = get().getAllItems();
+        const lowerName = name.toLowerCase();
+        return items.find((item) => 
+          item.name.toLowerCase().includes(lowerName)
+        );
+      }
+
     }),
     { name: "kosai-stock" }
   )
