@@ -15,6 +15,12 @@ export default function BudgetScreen() {
 
   return (
     <main className="w-full pb-24">
+      <div className="text-3xl font-black leading-8 mt-4 ml-1">
+        <h1 className="font-semibold">The Smartest Way to Budget</h1>
+        <p className="font-medium text-base text-neutral-500">
+          Keep tabs on your money and make budgeting simple
+        </p>
+      </div>
       <BudgetSummaryChart />
       <ActivityList transactions={sortedTxns} limit={5} />
 

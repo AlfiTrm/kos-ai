@@ -24,7 +24,7 @@ export default function Topbar() {
   const user = useAuthStore((s) => s.user);
 
   return (
-    <header className="sticky top-0 z-40 bg-transparent backdrop-blur supports-[backdrop-filter]:bg-white/70">
+    <header className="fixed top-0 left-0 mx-auto w-full z-40 bg-white shadow rounded-b-4xl">
       <div className="mx-auto max-w-[480px] px-4 pt-3 pb-2">
         <div className="flex items-center justify-between">
           <Link href="/chatbot" className="shrink-0">

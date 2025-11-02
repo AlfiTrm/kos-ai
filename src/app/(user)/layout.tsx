@@ -16,7 +16,7 @@ export default function UserLayout({
       <div></div>
       <div className="w-[480px] flex-1 bg-[#FAF9FA] shadow-sm overflow-hidden pb-14">
         <Topbar />
-        <div className="px-4 pt-2">{children}</div>
+        <div className="px-4 pt-2 mt-14">{children}</div>
       </div>
       <Navbar />
     </div>
