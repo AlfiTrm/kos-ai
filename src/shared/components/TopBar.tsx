@@ -41,16 +41,16 @@ export default function Topbar() {
             <Link
               href="/user/notifications"
               aria-label="Notifications"
-              className="relative inline-flex items-center justify-center w-9 h-9 rounded-full bg-neutral-100"
+              className="relative inline-flex items-center justify-center w-9 h-9 rounded-full "
             >
-              <Bell className="w-4.5 h-4.5 text-neutral-700" />
-              <span className="absolute -top-0.5 -right-0.5 h-4 min-w-4 px-1 rounded-full bg-rose-500 text-[10px] text-white leading-4 text-center">
-                3
+              <Bell className="w-4 h-4 text-neutral-700" />
+              <span className="absolute top-2.5 right-3 h-1 w-1  rounded-full bg-rose-500 leading-4">
+                
               </span>
             </Link>
 
             <Link
-              href="/user/profile"
+              href="/userprofile"
               className="inline-flex items-center justify-center w-9 h-9 rounded-full bg-neutral-100 overflow-hidden"
               aria-label="Profile"
             >

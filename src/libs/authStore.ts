@@ -34,6 +34,8 @@ export interface AuthState {
 
   loginLocal: (email: string, pass: string) => boolean;
   logout: () => void;
+
+  updateProfile: (profile: Omit<UserProfile, "email">) => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -82,6 +84,19 @@ export const useAuthStore = create<AuthState>()(
 
       logout: () =>
         set({ user: undefined, isLoggedIn: false, tempEmail: undefined }),
+
+      updateProfile: (profile) => {
+        const email = get().user?.email;
+        if (!email || !get().users[email]) return;
+
+        const users = { ...get().users };
+        users[email].profile = profile;
+
+        set({
+          users,
+          user: { email, ...profile },
+        });
+      },
     }),
     { name: "kosai-auth" }
   )

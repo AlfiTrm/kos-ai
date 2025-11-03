@@ -70,7 +70,7 @@ export default function Navbar() {
                     className={
                       "absolute -translate-y-4 inset-0 rounded-full" +
                       "transition-all duration-300 ease-in-out " +
-                      (active ? "opacity-100 scale-150 bg-white shadow-xs rounded-full rotate-180" : "opacity-0 scale-75")
+                      (active ? "opacity-100 scale-150 bg-gradient-to-b from-white to-purple-1/30 shadow-xs rounded-full rotate-180" : "opacity-0 scale-75")
                     }
                   />
                   <Icon

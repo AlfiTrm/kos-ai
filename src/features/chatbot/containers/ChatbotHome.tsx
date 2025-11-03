@@ -30,9 +30,7 @@ export default function ChatbotHome() {
                 {user?.fullName ? `, ${user.fullName.split(" ")[0]}!` : "!"}
               </span>
             </h1>
-            <h1 className="">
-              Your Smarter Journey <br /> Begins Now!
-            </h1>
+            Your Smarter Journey <br /> Begins Now!
           </div>
 
           <div className="mt-10 w-full p-4 rounded-xl bg-white border-neutral-100 border flex flex-col gap-2 justify-center ">

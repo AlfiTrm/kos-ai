@@ -9,7 +9,7 @@ export default function UserLayout({
 }) {
   return (
     <div className="flex flex-col items-center min-h-screen bg-neutral-50 text-neutral-900 overflow-hidden">
-      <div className="fixed flex top-1/4 opacity-35 blur-3xl">
+      <div className="fixed flex top-1/4 opacity-25 blur-3xl">
         <div className="w-96 h-96 bg-orange-1 rounded-full left-0"></div>
         <div className="w-96 h-96 bg-purple-1 rounded-full right-0"></div>
       </div>
