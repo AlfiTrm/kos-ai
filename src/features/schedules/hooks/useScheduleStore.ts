@@ -3,6 +3,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { ScheduleTask, TaskPriority } from "../types/scTypes";
 import { nanoid } from "nanoid";
+import { useNotificationStore } from "@/libs/useNotificationStore";
 
 const getToday = () => new Date().toISOString().split("T")[0];
 
@@ -35,7 +36,7 @@ export const useScheduleStore = create<ScheduleState>()(
       addTask: (data) => {
         const id = nanoid();
         const now = Date.now();
-        
+
         const newTask: ScheduleTask = {
           ...data,
           id,
@@ -50,6 +51,13 @@ export const useScheduleStore = create<ScheduleState>()(
           tasks: { ...s.tasks, [id]: newTask },
           taskOrder: [id, ...s.taskOrder],
         }));
+        const isToday = newTask.date === getToday();
+        const dateText = isToday ? "untuk hari ini" : `pada ${newTask.date}`;
+
+        useNotificationStore.getState().addNotification({
+          message: `Tugas baru: "${newTask.title}" ${dateText} berhasil ditambahkan.`,
+          href: `/schedule/calendar?date=${newTask.date}`
+        });
       },
 
       deleteTask: (taskId) => {
@@ -66,7 +74,7 @@ export const useScheduleStore = create<ScheduleState>()(
       findTask: (name, dateMatcher) => {
         const tasks = get().getAllTasks();
         const lowerName = name.toLowerCase();
-        
+
         const candidates = tasks.filter((task) =>
           task.title.toLowerCase().includes(lowerName)
         );
@@ -78,8 +86,8 @@ export const useScheduleStore = create<ScheduleState>()(
         const specificTask = candidates.find((t) =>
           t.date.endsWith(dateMatcher)
         );
-        
-        return specificTask || candidates[0]; 
+
+        return specificTask || candidates[0];
       },
 
       getDailyTasksByDate: (date: string) => {

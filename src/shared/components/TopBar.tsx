@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Bell } from "lucide-react";
 import { useAuthStore } from "@/libs/authStore";
+import { useNotificationStore } from "@/libs/useNotificationStore";
 
 function Initials({ name }: { name?: string }) {
   const init =
@@ -22,7 +23,7 @@ function Initials({ name }: { name?: string }) {
 
 export default function Topbar() {
   const user = useAuthStore((s) => s.user);
-
+  const unreadCount = useNotificationStore((s) => s.getUnreadCount());
   return (
     <header className="fixed top-0 left-0 mx-auto w-full z-40 bg-transparent">
       <div className="mx-auto max-w-[480px] px-4 pt-3 pb-2">
@@ -39,14 +40,19 @@ export default function Topbar() {
 
           <div className="flex items-center gap-3">
             <Link
-              href="/user/notifications"
+              href="/notifications"
               aria-label="Notifications"
               className="relative inline-flex items-center justify-center w-9 h-9 rounded-full "
             >
               <Bell className="w-4 h-4 text-neutral-700" />
-              <span className="absolute top-2.5 right-3 h-1 w-1  rounded-full bg-rose-500 leading-4">
-                
-              </span>
+              {unreadCount > 0 && (
+                <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-rose-500">
+                  <span className="absolute -top-0.5 right-0 h-2.5 w-2.5 rounded-full bg-rose-500 animate-ping"></span>
+                  <span className="absolute -top-1 -right-0.5 h-3 w-3 text-[10px] flex items-center justify-center rounded-full bg-rose-500 text-white">
+                    {unreadCount > 9 ? '9+' : unreadCount}
+                  </span>
+                </span>
+              )}
             </Link>
 
             <Link

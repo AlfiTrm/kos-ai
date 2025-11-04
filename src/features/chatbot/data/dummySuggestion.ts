@@ -1,5 +1,6 @@
-export const suggestions = [
-    "How to manage my budget",
-    "Laundry tips for kost life",
-    "Schedule cleaning reminders",
-];
+export const suggestion = [
+    "Sisa saldo berapa?",
+    "Beli 15000 makan siang",
+    "Ingatkan aku cuci baju besok",
+    "Daftar stok barang",
+]

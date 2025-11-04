@@ -8,6 +8,8 @@ import ChatMessage from "../components/ChatMessage";
 import { useChatEngine } from "../hooks/useChatEngine";
 import chatbotLogo from "../../../../public/logo/chatbot-logo.png";
 import { useKosAiEngine } from "../hooks/useKosAiEngine";
+import QuickChips from "../components/QuickChips";
+import { suggestion } from "../data/dummySuggestion";
 
 export default function ChatRoom() {
   const { chat: chatId } = useParams<{ chat: string }>();
@@ -59,6 +61,11 @@ export default function ChatRoom() {
           chat.messages.map((m) => <ChatMessage key={m.id} m={m} />)
         )}
       </div>
+      {isEmptyIntro && (
+        <div className="fixed left-0 right-0 bottom-40 mx-auto max-w-[480px] w-full z-10">
+          <QuickChips items={suggestion} onPick={onSend} />
+        </div>
+      )}
       <ChatInput onSend={onSend} />
     </main>
   );

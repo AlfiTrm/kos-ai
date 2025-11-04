@@ -3,6 +3,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { StockItem, UnitName } from "../types/sTypes";
 import { nanoid } from "nanoid";
+import { useNotificationStore } from "@/libs/useNotificationStore";
 
 interface StockState {
   items: Record<string, StockItem>;
@@ -55,6 +56,17 @@ export const useStockStore = create<StockState>()(
         set(s => {
           const it = s.items[id]; if (!it) return s;
           const left = Math.max(it.leftover - n, 0);
+
+          const pct = it.stock === 0 ? 0 : (left / it.stock) * 100;
+          
+          const oldPct = it.stock === 0 ? 0 : (it.leftover / it.stock) * 100;
+          if (pct < 20 && oldPct >= 20) {
+            useNotificationStore.getState().addNotification({
+              message: `Stok ${it.name} menipis! Sisa ${left} ${it.unit}.`,
+              href: "/stock"
+            });
+          }
+
           return { items: { ...s.items, [id]: { ...it, leftover: left, updatedAt: Date.now() } } };
         }),
 

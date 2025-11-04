@@ -76,7 +76,27 @@ export function useKosAiEngine() {
 
   const replyEngine = (string: string): string => {
     const t = string.trim().toLowerCase();
-
+    const helpRegex = /^(daftar prompt|bisa apa aja|help|bantuan|perintah|daftar perintah)/i;
+    if (helpRegex.test(t)) {
+      return `Siap, Nak! Ini daftar perintah yang Ibu mengerti:\n
+    ${'Budget & Keuangan'}      
+      • \Sisa saldo?\ (Untuk cek saldo)
+      • \`Beli 15000 makan siang\` (Catat pengeluaran)
+      • \`Masuk 50000 kiriman\` (Catat pemasukan)
+    
+    ${'Jadwal & Pengingat'}      
+    • \`Daftar tugas\` (Lihat semua tugas)
+    • \`Ingatkan aku belajar besok\`
+    • \`Jadwalkan rapat lusa\`
+    • \`Tambah tugas bayar kos tanggal 25\`
+    • \`Hapus tugas belajar\`
+    
+    ${'Stok Barang'}      
+      • \`Daftar stok\` (Lihat semua stok)
+      • \`Stok 10 pcs indomie\` (Tambah stok baru)
+      • \`habis indomie\` (Hapus stok)\n\
+    \n Ketik aja salah satu perintah di atas ya!`;
+    }
     if (/^saldo|sisa/.test(t)) {
       const balance = getTotalBalance();
       const spent = getTotalExpense();
@@ -219,9 +239,8 @@ export function useKosAiEngine() {
       }
       let response = "Ini daftar stok kamu, Nak:";
       allItems.slice(0, 10).forEach((item, index) => {
-        response += `\n${index + 1}. ${item.name} (sisa ${item.leftover}/${
-          item.stock
-        } ${item.unit})`;
+        response += `\n${index + 1}. ${item.name} (sisa ${item.leftover}/${item.stock
+          } ${item.unit})`;
       });
       return response;
     }
@@ -239,8 +258,8 @@ export function useKosAiEngine() {
       return `Sip, Ibu tambahkan ${amt} ${unit} ${name} ke daftar stok.`;
     }
 
-    return "Ibu kurang paham, Nak. Coba bilang:\n`daftar tugas`\n`hapus tugas cuci baju`\n`daftar stok`\n`hapus stok indomie`\n`beli 15000 makan`";
+    return "Ibu kurang paham, Nak. Coba bilang:\n`daftar tugas`\n`beli 15000 makan`\n\nAtau ketik `daftar prompt` untuk lihat semua perintah.";
   };
-  
+
   return { replyEngine };
 }
