@@ -37,7 +37,7 @@ const SuccessPage = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowConfetti(false);
-    }, 6000);
+    }, 10000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -51,7 +51,7 @@ const SuccessPage = () => {
           width={width}
           height={height}
           recycle={false}
-          numberOfPieces={300}
+          numberOfPieces={500}
           gravity={0.1}
           tweenDuration={10000}
           colors={[
@@ -74,8 +74,8 @@ const SuccessPage = () => {
         All done! Your budget is ready, so you can start managing your money
       </p>
 
-      <div className="w-full max-w-xs space-y-3">
-        <GradientButton onClick={() => router.replace("/budget")}>
+      <div className="w-full max-w-xs space-y-3 relative z-29">
+        <GradientButton onClick={() => router.push("/budget")}>
           Continue
         </GradientButton>
         <OutlineButton onClick={() => router.push("/budget/add")}>

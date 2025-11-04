@@ -106,7 +106,7 @@ export default function BudgetSummaryChart({ size = 240, stroke = 20 }: Props) {
 
         <div className="absolute inset-0 grid place-items-center text-center">
           <div>
-            <div className="text-3xl font-extrabold px-4">
+            <div className={`text-2xl font-bold px-4 ${income > 0 ? "text-green-500" : "text-red-500"}`}>
               {formatRupiah(totalBalance)}
             </div>
             <div className="text-xs text-neutral-600 mt-1">
@@ -115,10 +115,10 @@ export default function BudgetSummaryChart({ size = 240, stroke = 20 }: Props) {
           </div>
         </div>
 
-        <span className="absolute -top-1 left-6 text-[11px] bg-white/80 backdrop-blur px-2 py-1 rounded-full shadow">
+        <span className="absolute -top-1 left-6 text-xs text-green-500 bg-white/80 backdrop-blur px-2 py-1 rounded-full shadow">
           {pIncome}% ↑
         </span>
-        <span className="absolute -right-2 bottom-8 text-[11px] bg-white/80 backdrop-blur px-2 py-1 rounded-full shadow">
+        <span className="absolute -right-2 bottom-8 text-xs text-red-500 bg-white/80 backdrop-blur px-2 py-1 rounded-full shadow">
           {pExpense}% ↓
         </span>
       </div>

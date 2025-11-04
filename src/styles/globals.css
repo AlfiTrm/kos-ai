@@ -101,5 +101,5 @@
 }
 
 .container {
-  @apply container right-0 left-0 mx-auto lg:px-8 md:px-28 px-8 xl:px-64;
+  @apply container right-0 left-0 mx-auto lg:px-8 md:px-28 px-12 xl:px-64;
 }

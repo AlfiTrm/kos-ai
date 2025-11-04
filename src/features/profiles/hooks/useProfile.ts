@@ -35,7 +35,7 @@ export const useProfile = () => {
 
     const handleGoToAccountInfo = () => router.push("/userprofile/edit");
     const handleGoToPassword = () => alert("Ke halaman Password!");
-    const handleGoToFAQs = () => alert("Ke halaman Bantuan!");
+    const handleGoToFAQs = () => router.push("userprofile/faq");
 
     return {
         user,

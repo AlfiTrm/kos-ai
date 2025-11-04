@@ -70,14 +70,14 @@ export default function Navbar() {
                     className={
                       "absolute -translate-y-4 inset-0 rounded-full" +
                       "transition-all duration-300 ease-in-out " +
-                      (active ? "opacity-100 scale-150 bg-gradient-to-b from-white to-purple-1/30 shadow-xs rounded-full rotate-180" : "opacity-0 scale-75")
+                      (active ? "opacity-100 scale-150 bg-gradient-to-t from-orange-1 to-purple-1 shadow-xs rounded-full rotate-180 active:rotate-180 active:shadow-inner active:shadow-gray-500" : "opacity-0 scale-75")
                     }
                   />
                   <Icon
                     className={
                       "relative z-10 w-5 h-5 transition-all duration-300 ease-in-out " +
                       (active
-                        ? "text-purple-1 scale-150 -translate-y-4"
+                        ? "text-white scale-150 -translate-y-4"
                         : "text-neutral-500")
                     }
                   />
